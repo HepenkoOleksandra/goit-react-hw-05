@@ -9,6 +9,7 @@ import { Routes, Route, NavLink } from "react-router-dom"
 import HomePage from './pages/HomePage';
 import MoviesPage from './pages/MoviesPage';
 import NotFoundPage from './pages/NotFoundPage';
+import MovieDetailsPage from './pages/MovieDetailsPage';
 
 const navLinkClassActive = ({ isActive }) =>
   // clsx(css.navLink, { [css.active]: isActive });
@@ -42,17 +43,10 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage/>} />
           <Route path='/movies' element={<MoviesPage />} />
+          <Route path='/movies/:movieId/*' element={<MovieDetailsPage/>} />
           <Route path='*' element={<NotFoundPage/>} />
         </Routes>
       </main>
-     {/* <ul> 
-        {Array.isArray(movies) && movies.map((movie) => {
-          return (
-            <Movies key={movie.id} movie={movie} />
-)
-        })}
-      
-     </ul> */}
     </div>
   )
 }
