@@ -1,10 +1,10 @@
 import { Link, Routes, Route, useParams } from "react-router-dom"
-import MovieCast from "../components/MovieCast/MovieCast";
-import MovieReviews from "../components/MovieReviews/MovieReviews";
+import MovieCast from "../../components/MovieCast/MovieCast";
+import MovieReviews from "../../components/MovieReviews/MovieReviews";
 import { useEffect, useState } from "react";
-import { getMovieDetails } from "../apiService/movies";
-import Loader from "../components/Loader/Loader";
-import ErrorMessage from "../components/ErrorMessage/ErrorMessage";
+import { getMovieDetails } from "../../apiService/movies";
+import Loader from "../../components/Loader/Loader";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 
 
@@ -36,7 +36,7 @@ async function fetchMovieDetails() {
     <div>
       {isLoading && <Loader/>}
       {isError && <ErrorMessage/>}
-      <Link to="/"><FaLongArrowAltLeft />Go back</Link>
+      <Link to="/movies"><FaLongArrowAltLeft />Go back</Link>
       {movieDetails !== null && (
         <div>
           <img src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}

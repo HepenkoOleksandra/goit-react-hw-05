@@ -1,8 +1,9 @@
+// import { Link } from "react-router-dom";
 import { useEffect, useState } from "react"
-import { requestTrendingMovies } from "../apiService/movies";
-import Loader from "../components/Loader/Loader";
-import ErrorMessage from "../components/ErrorMessage/ErrorMessage";
-import { Link } from "react-router-dom";
+import { requestTrendingMovies } from "../../apiService/movies";
+import Loader from "../../components/Loader/Loader";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import MovieList from "../../components/MovieList/MovieList";
 
 const HomePage = () => {
   const [trendingMovies, setTrendingMovies] = useState(null);
@@ -10,7 +11,6 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-
     async function fetchTrendingMovies() {
       setIsError(false);
       setIsLoading(true);
@@ -31,19 +31,9 @@ const HomePage = () => {
   return (
     <div>
       <h1>Trending today</h1>
-      <ul>
-        {isLoading && <Loader />}
-        {isError && <ErrorMessage />}
-        {Array.isArray(trendingMovies) && trendingMovies.map((movie) => {
-          return (
-            
-              <li key={movie.id} >
-              <Link to={`/movies/${movie.id}`}>
-              <h1>{movie.title}</h1>
-              </Link>
-            </li>   
-        )})}
-      </ul>
+      {isLoading && <Loader />}
+      {isError && <ErrorMessage />}
+      <MovieList movieList={trendingMovies} />
     </div>
   )
 };

@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { FcSearch } from 'react-icons/fc';
-import { getSearchMovie } from '../apiService/movies';
-import Loader from '../components/Loader/Loader';
-import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getSearchMovie } from '../../apiService/movies';
+import Loader from '../../components/Loader/Loader';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import MovieList from '../../components/MovieList/MovieList';
 
 const MoviesPage = () => {
   const [query, setQuery] = useState("");
   const [searchMovies, setSearchMovies] = useState(null);
-   const [isError, setIsError] = useState(null);
+  const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => { 
@@ -54,19 +55,9 @@ const MoviesPage = () => {
     <button type="submit"><FcSearch /></button>
     <Toaster />           
       </form>
-      <ul>
-       {isLoading && <Loader />}
+      {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {searchMovies !== null && (searchMovies.map((movie) => {
-        return (
-           <li key={movie.id} >
-              <Link to={`/movies/${movie.id}`}>
-              <h1>{movie.title}</h1>
-              </Link>
-            </li> 
-        )
-      }))}
-        </ul>
+      <MovieList movieList={searchMovies} />
 </div>
   )
 }
