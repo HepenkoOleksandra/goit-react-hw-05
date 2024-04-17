@@ -1,5 +1,4 @@
-// import { Link } from "react-router-dom";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { requestTrendingMovies } from "../../apiService/movies";
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
@@ -26,16 +25,15 @@ const HomePage = () => {
 
     fetchTrendingMovies();
 
-  }, [])
+  }, []);
 
   return (
     <div>
-      <h1>Trending today</h1>
-      {isLoading && <Loader />}
-      {isError && <ErrorMessage />}
       <MovieList movieList={trendingMovies} />
+      {isLoading && <Loader />}
+      {isError && <ErrorMessage message={isError} />}
     </div>
-  )
+  );
 };
 
-export default HomePage
+export default HomePage;

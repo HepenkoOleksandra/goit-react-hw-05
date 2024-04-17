@@ -1,20 +1,23 @@
-import toast, { Toaster } from 'react-hot-toast';
-import { FcSearch } from 'react-icons/fc';
-// import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getSearchMovie } from '../../apiService/movies';
 import Loader from '../../components/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import MovieList from '../../components/MovieList/MovieList';
+import { useSearchParams } from 'react-router-dom';
+import SearchForm from '../../components/SearchForm/SearchForm';
 
 const MoviesPage = () => {
-  const [query, setQuery] = useState("");
+  // const [query, setQuery] = useState("");
   const [searchMovies, setSearchMovies] = useState(null);
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query');
 
-  useEffect(() => { 
-     async function fetchSearchMovies() {
+  useEffect(() => {
+    if (!query) return;
+
+    async function fetchSearchMovies() {
       setIsError(false);
       setIsLoading(true);
       try {
@@ -30,36 +33,18 @@ const MoviesPage = () => {
     fetchSearchMovies();
   }, [query]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (e.currentTarget.elements.query.value.trim() === "") {
-      toast.error('Enter the name of the movie, please!')
-      return;
-    }
-    
-    const value = e.currentTarget.elements.query.value.trim();
-    setQuery(value);
-  }
+  const onSetSearchQuery = (searchWord) => {
+    setSearchParams({ query: searchWord });
+  };
   
   return (
-  <div>
-   <form onSubmit={handleSubmit}>  
-    <input
-      type="text"
-      name="query"
-      autoComplete="off"
-      autoFocus
-      placeholder="Search movies..."
-    />
-    <button type="submit"><FcSearch /></button>
-    <Toaster />           
-      </form>
-      {isLoading && <Loader />}
-      {isError && <ErrorMessage />}
+    <div>
+      <SearchForm onFormSubmit={onSetSearchQuery} />
       <MovieList movieList={searchMovies} />
-</div>
-  )
-}
+      {isLoading && <Loader />}
+      {isError && <ErrorMessage message={isError} />}
+    </div>
+  );
+};
 
-export default MoviesPage
+export default MoviesPage;

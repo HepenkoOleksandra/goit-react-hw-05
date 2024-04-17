@@ -1,42 +1,43 @@
-import { Link, Routes, Route, useParams } from "react-router-dom"
-import MovieCast from "../../components/MovieCast/MovieCast";
-import MovieReviews from "../../components/MovieReviews/MovieReviews";
-import { useEffect, useState } from "react";
+import { Link, Routes, Route, useParams, useLocation } from "react-router-dom";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 import { getMovieDetails } from "../../apiService/movies";
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { FaLongArrowAltLeft } from "react-icons/fa";
 
+const MovieCast = lazy(() => import("../../components/MovieCast/MovieCast"));
+const MovieReviews = lazy(() => import("../../components/MovieReviews/MovieReviews"));
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const backLinkRef = useRef(location.state ?? '/movies');
 
   useEffect(() => {
-
-async function fetchMovieDetails() {
-  setIsError(false);
+    async function fetchMovieDetails() {
+      setIsError(false);
       setIsLoading(true);
-  try {
-    const data = await getMovieDetails(movieId);
-    setMovieDetails(data);
-    console.log(data);
-  } catch (error) {
-    setIsError(error.message);
-  } finally {
-    setIsLoading(false);
-  }
-}
+      try {
+        const data = await getMovieDetails(movieId);
+        setMovieDetails(data);
+      } catch (error) {
+        setIsError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
     fetchMovieDetails();
-  }, [movieId])
+  }, [movieId]);
 
   return (
     <div>
-      {isLoading && <Loader/>}
-      {isError && <ErrorMessage/>}
-      <Link to="/movies"><FaLongArrowAltLeft />Go back</Link>
+      {isLoading && <Loader />}
+      {isError && <ErrorMessage message={isError} />}
+      <Link to={backLinkRef.current}><FaLongArrowAltLeft />Go back</Link>
       {movieDetails !== null && (
         <div>
           <img src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
@@ -48,23 +49,24 @@ async function fetchMovieDetails() {
               <p>{movieDetails.overview}</p>
             </h2>
             <h3>Genres
-              <p>{movieDetails.genres.map((gener) => {return gener.name})}</p>
+              <p>{movieDetails.genres.map((gener) => { return gener.name })}</p>
             </h3>
           </div>
         </div>
       )}
       <div>
         <p>Additional information</p>
- <Link to='cast'>Cast</Link>
-      <Link to='reviews'>Reviews</Link>
-      <Routes >
-        <Route path="cast" element={<MovieCast/>} />
-        <Route path="reviews" element={<MovieReviews/>} />
-      </Routes>
+        <Link to='cast'>Cast</Link>
+        <Link to='reviews'>Reviews</Link>
+        <Suspense fallback={<Loader />}>
+          <Routes >
+            <Route path="cast" element={<MovieCast />} />
+            <Route path="reviews" element={<MovieReviews />} />
+          </Routes>
+        </Suspense>
       </div>
-     
     </div>
-  )
-}
+  );
+};
 
-export default MovieDetailsPage
+export default MovieDetailsPage;
