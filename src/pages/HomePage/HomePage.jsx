@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { requestTrendingMovies } from "../../apiService/movies";
+import { requestTrendingMovies } from "../../services/moviesAPI";
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import MovieList from "../../components/MovieList/MovieList";

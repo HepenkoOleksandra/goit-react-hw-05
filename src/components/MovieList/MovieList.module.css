@@ -1,0 +1,12 @@
+.movieName {
+    color: brown;
+    font-size: 14px;
+}
+
+.movieName:hover {
+    color: blue;
+}
+
+.movieList {
+color: green;
+}

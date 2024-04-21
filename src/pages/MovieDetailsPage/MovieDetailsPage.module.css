@@ -1,0 +1,22 @@
+.movieContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.movieDetails {
+    display: flex;
+    gap: 10px;
+}
+
+.details {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.additionalInformation {
+    display: flex;
+    /* gap: 5px; */
+    flex-direction: column;
+}

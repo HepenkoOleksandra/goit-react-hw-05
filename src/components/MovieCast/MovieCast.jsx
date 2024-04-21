@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getMovieCredits } from "../../apiService/movies";
+import { getMovieCredits } from "../../services/moviesAPI";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-
+import { defaultImg } from "../../services/defaultImg";
+import css from "./MovieCast.module.css"
 
 const MovieCast = () => {
   const { movieId } = useParams();
@@ -37,7 +38,7 @@ const MovieCast = () => {
         {movieCast !== null && (movieCast.map((cast) => {
           return (
             <li key={cast.id}>
-              <img src={`https://image.tmdb.org/t/p/w500/${cast.profile_path}`} alt={cast.original_name} />
+              <img className={css.castImg} src={cast.profile_path ? `https://image.tmdb.org/t/p/w500/${cast.profile_path}` : defaultImg} alt={cast.original_name} />
               <h1>{cast.original_name}</h1>
               <h2>Character: {cast.character}</h2>
             </li>
